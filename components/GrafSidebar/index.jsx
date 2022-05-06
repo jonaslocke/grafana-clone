@@ -60,6 +60,14 @@ const closedMixin = (theme) => ({
 const GrafSidebar = () => {
   const theme = useTheme();
   const { drawer, handleDrawerClose } = useContext(GlobalContext);
+  const menuItems = [
+    { title: "Dashboard", icon: <HomeIcon />, to: "dashboard" },
+    {
+      title: "Alarms Listing",
+      icon: <NotificationsActiveIcon />,
+      to: "notifications",
+    },
+  ];
 
   return (
     <Drawer variant="permanent" open={drawer}>
@@ -74,16 +82,9 @@ const GrafSidebar = () => {
       </DrawerHeader>
       <Divider />
       <List>
-        <GrafMenuItem
-          title={"Dashboard"}
-          icon={<HomeIcon />}
-          to={"dashboard"}
-        />
-        <GrafMenuItem
-          title={"Alarms Listing"}
-          icon={<NotificationsActiveIcon />}
-          to={"notifications"}
-        />
+        {menuItems.map(({ title, icon, to }, id) => (
+          <GrafMenuItem title={title} icon={icon} to={to} key={id} />
+        ))}
       </List>
     </Drawer>
   );
