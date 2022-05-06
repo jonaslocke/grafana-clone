@@ -10,7 +10,7 @@ import GrafDrawerHeader from "../components/GrafDrawerHeader";
 
 export default function GrafanaClone({ Component, pageProps }) {
   const [drawer, setDrawer] = useState(false);
-  const [notificationsCount, setNotificationsCount] = useState(0);
+  const [notificationsCount, setNotificationsCount] = useState(2);
   const handleDrawerOpen = () => {
     setDrawer(true);
   };

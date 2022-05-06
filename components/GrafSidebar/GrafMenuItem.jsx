@@ -1,5 +1,5 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { GlobalContext } from "../../src/GlobalContext";
 import { useRouter } from "next/router";
 
