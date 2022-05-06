@@ -1,11 +1,12 @@
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { GlobalContext } from "../../src/GlobalContext";
 import { useRouter } from "next/router";
 
 const GrafMenuItem = ({ title, icon, to = "#" }) => {
   const { drawer } = useContext(GlobalContext);
   const router = useRouter();
+  const isActive = router.pathname.includes(to);
 
   return (
     <ListItemButton
@@ -16,6 +17,8 @@ const GrafMenuItem = ({ title, icon, to = "#" }) => {
         px: 2.5,
       }}
       onClick={() => router.push(`/${to}`)}
+      selected={isActive}
+      disabled={isActive}
     >
       <ListItemIcon
         sx={{
