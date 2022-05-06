@@ -1,13 +1,23 @@
-import "../styles/globals.css";
-import Head from "next/head";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
 import { useState } from "react";
+import Head from "next/head";
 import { GlobalContext } from "../src/GlobalContext";
-import { Container } from "@mui/material";
 import GrafAppBar from "../components/GrafAppBar";
 import GrafSidebar from "../components/GrafSidebar";
+import GrafDrawerHeader from "../components/GrafDrawerHeader";
 
-function MyApp({ Component, pageProps }) {
-  const [state, setState] = useState(false);
+export default function GrafanaClone({ Component, pageProps }) {
+  const [drawer, setDrawer] = useState(false);
+  const [notificationsCount, setNotificationsCount] = useState(0);
+  const handleDrawerOpen = () => {
+    setDrawer(true);
+  };
+  const handleDrawerClose = () => {
+    setDrawer(false);
+  };
+
   return (
     <>
       <Head>
@@ -17,18 +27,24 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <GlobalContext.Provider
         value={{
-          state,
-          setState,
+          drawer,
+          setDrawer,
+          handleDrawerOpen,
+          handleDrawerClose,
+          notificationsCount,
+          setNotificationsCount,
         }}
       >
-        <GrafAppBar />
-        <GrafSidebar />
-        <Container maxWidth="xm" sx={{ paddingY: 3 }}>
-          <Component {...pageProps} />
-        </Container>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <GrafAppBar />
+          <GrafSidebar />
+          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <GrafDrawerHeader />
+            <Component {...pageProps} />
+          </Box>
+        </Box>
       </GlobalContext.Provider>
     </>
   );
 }
-
-export default MyApp;
