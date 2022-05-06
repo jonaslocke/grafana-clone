@@ -65,7 +65,7 @@ const GrafSidebar = () => {
     {
       title: "Alarms Listing",
       icon: <NotificationsActiveIcon />,
-      to: "notifications",
+      to: "alarms",
     },
   ];
 
