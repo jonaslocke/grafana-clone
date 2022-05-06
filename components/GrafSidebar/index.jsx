@@ -1,20 +1,14 @@
-import {
-  Divider,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { Divider, IconButton, List } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { styled, useTheme } from "@mui/material/styles";
 import { useContext } from "react";
 import { drawerWidth } from "../../src/Constants";
 import { GlobalContext } from "../../src/GlobalContext";
+import GrafMenuItem from "./GrafMenuItem";
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -80,51 +74,16 @@ const GrafSidebar = () => {
       </DrawerHeader>
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItemButton
-            key={text}
-            sx={{
-              minHeight: 48,
-              justifyContent: drawer ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: drawer ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} sx={{ opacity: drawer ? 1 : 0 }} />
-          </ListItemButton>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItemButton
-            key={text}
-            sx={{
-              minHeight: 48,
-              justifyContent: drawer ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: drawer ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} sx={{ opacity: drawer ? 1 : 0 }} />
-          </ListItemButton>
-        ))}
+        <GrafMenuItem
+          title={"Dashboard"}
+          icon={<HomeIcon />}
+          to={"dashboard"}
+        />
+        <GrafMenuItem
+          title={"Alarms Listing"}
+          icon={<NotificationsActiveIcon />}
+          to={"notifications"}
+        />
       </List>
     </Drawer>
   );
