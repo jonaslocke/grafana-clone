@@ -9,12 +9,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { alarms as alarmsData } from "../../dao/DaoAlarms";
+import { AlarmsContext } from "../../src/AlarmsContext";
+import { alarmsPerPage } from "../../src/Constants";
 import { capitalize } from "../../src/util";
 import GrafPagination from "./GrafPagination";
-import { AlarmsContext } from "../../src/AlarmsContext";
-import { useContext, useEffect, useState } from "react";
-import { alarmsPerPage } from "../../src/Constants";
 
 const headers = [
   "id",
@@ -57,14 +57,29 @@ const AlarmsList = () => {
     );
   };
 
-  const { page } = useContext(AlarmsContext);
-  const [alarms, setAlarms] = useState([]);
+  const { page, setPage, setPages, nameSearch, statusSearch } =
+    useContext(AlarmsContext);
+  const [alarms, setAlarms] = useState(alarmsData.data);
+  const [paginatedAlarms, setPaginatedAlarms] = useState([]);
+
+  useEffect(() => {
+    setPages(Math.ceil(alarmsData.data.length / alarmsPerPage));
+  }, []);
 
   useEffect(() => {
     const end = page * alarmsPerPage - 1;
     const start = end - alarmsPerPage + 1;
-    setAlarms(alarmsData.data.slice(start, end));
-  }, [page]);
+    setPaginatedAlarms(alarms.slice(start, end));
+  }, [alarms, page]);
+
+  useEffect(() => {
+    const filteredAlarms = alarmsData.data.filter(({ name }) =>
+      name.match(new RegExp(nameSearch, "i"))
+    );
+    setAlarms(filteredAlarms);
+    setPage(1);
+    setPages(Math.ceil(filteredAlarms.length / alarmsPerPage));
+  }, [nameSearch]);
 
   return (
     <TableContainer component={Paper} sx={{ marginTop: 6 }}>
@@ -81,7 +96,7 @@ const AlarmsList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {alarms.map((row) => (
+          {paginatedAlarms.map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

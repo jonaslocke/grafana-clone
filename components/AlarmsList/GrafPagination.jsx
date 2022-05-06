@@ -1,14 +1,12 @@
 import { Pagination, Stack } from "@mui/material";
 import { useContext } from "react";
-import { alarms } from "../../dao/DaoAlarms";
 import { AlarmsContext } from "../../src/AlarmsContext";
 
 const GrafPagination = () => {
-  const count = alarms.pages;
   const handleChange = (_, value) => {
     setPage(value);
   };
-  const { page, setPage } = useContext(AlarmsContext);
+  const { page, setPage, pages } = useContext(AlarmsContext);
 
   return (
     <Stack
@@ -18,7 +16,7 @@ const GrafPagination = () => {
       sx={{ padding: 2 }}
     >
       <Pagination
-        count={count}
+        count={pages}
         variant="outlined"
         shape="rounded"
         page={page}

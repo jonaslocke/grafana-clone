@@ -1,12 +1,16 @@
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import AddAlarm from "../../components/AddAlarm";
-import AlarmsForm from "../../components/AlarmsForm";
 import AlarmsList from "../../components/AlarmsList";
+import AlarmsSearch from "../../components/AlarmsSearch";
 import { AlarmsContext } from "../../src/AlarmsContext";
 
-const Notifications = () => {
+const Alarms = () => {
   const [page, setPage] = useState(1);
+  const [nameSearch, setNameSearch] = useState("");
+  const [statusSearch, setStatusSearch] = useState("");
+  const [pages, setPages] = useState(0);
+
   return (
     <>
       <Typography variant="h5" noWrap component="div" sx={{ flexGrow: 1 }}>
@@ -16,9 +20,15 @@ const Notifications = () => {
         value={{
           page,
           setPage,
+          nameSearch,
+          setNameSearch,
+          statusSearch,
+          setStatusSearch,
+          pages,
+          setPages,
         }}
       >
-        <AlarmsForm />
+        <AlarmsSearch />
         <AlarmsList />
       </AlarmsContext.Provider>
       <AddAlarm />
@@ -26,4 +36,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default Alarms;
