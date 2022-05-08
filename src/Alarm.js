@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 
 export class Alarm {
-  constructor({ id, name, source, metric, trigger }) {
+  constructor({ id, name, source, metric, triggerCondition, trigger }) {
     this.id = id || uuidv4();
     this.name = name;
     this.source = source;
     this.metric = metric;
+    this.triggerCondition = triggerCondition;
     this.trigger = trigger;
     this.paused = false;
     this.deletedOn = null;
