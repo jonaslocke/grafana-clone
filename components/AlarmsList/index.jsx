@@ -9,14 +9,15 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { alarms as alarmsData } from "../../dao/DaoAlarms";
 import { AlarmsContext } from "../../src/AlarmsContext";
 import { alarmsPerPage } from "../../src/Constants";
+import { GlobalContext } from "../../src/GlobalContext";
+import { fetchAlarms } from "../../src/HttpServer";
 import { capitalize } from "../../src/util";
 import GrafPagination from "./GrafPagination";
-import { fetchAlarms } from "../../src/HttpServer";
-import { useRouter } from "next/router";
 
 const headers = [
   "id",
@@ -91,8 +92,11 @@ const AlarmsList = () => {
 
   const loadAlarms = () =>
     setAlarms(alarmsData.data.filter(({ deletedOn }) => !deletedOn));
+
   const { page, setPage, setPages, nameSearch, statusSearch } =
     useContext(AlarmsContext);
+  const { setNotificationsCount } = useContext(GlobalContext);
+
   const [alarms, setAlarms] = useState([]);
   const [paginatedAlarms, setPaginatedAlarms] = useState([]);
 
@@ -115,6 +119,12 @@ const AlarmsList = () => {
     setPage(1);
     setPages(Math.ceil(filteredAlarms.length / alarmsPerPage));
   }, [nameSearch]);
+  useEffect(() => {
+    const count = alarms
+      .filter(({ deletedOn }) => !deletedOn)
+      .filter(({ paused }) => !paused).length;
+    setNotificationsCount(count);
+  }, [alarms]);
 
   return (
     <TableContainer component={Paper} sx={{ marginTop: 6 }}>

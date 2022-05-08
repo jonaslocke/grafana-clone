@@ -9,6 +9,7 @@ export class Alarm {
     this.trigger = trigger;
     this.paused = false;
     this.deletedOn = null;
+    this.created = new Date().toISOString();
   }
   pause() {
     this.paused = !this.paused;

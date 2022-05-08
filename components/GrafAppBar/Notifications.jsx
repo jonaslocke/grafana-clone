@@ -1,7 +1,6 @@
 import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import { useContext } from "react";
-
 import { GlobalContext } from "../../src/GlobalContext";
 
 const Notifications = () => {
