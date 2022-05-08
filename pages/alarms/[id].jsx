@@ -1,9 +1,12 @@
 import { Box, Modal } from "@mui/material";
+import { useRouter } from "next/router";
 import AlarmsForm from "./_alarmsform";
 import AlarmsRoot from "./_alarmsroot";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Alarms = () => {
-  const handleClose = () => console.log(1);
+  const router = useRouter();
+  const handleClose = () => router.push(`/alarms`);
 
   return (
     <>
@@ -23,10 +26,17 @@ const Alarms = () => {
           sx={{
             width: 8 / 10,
             bgcolor: "white",
-            padding: 4,
+            padding: 3,
+            position: "relative",
           }}
         >
-          <AlarmsForm />
+          <AlarmsForm close={handleClose} />
+          <CloseIcon
+            color="error"
+            fontSize="small"
+            sx={{ position: "absolute", top: 16, right: 16, cursor: "pointer" }}
+            onClick={handleClose}
+          />
         </Box>
       </Modal>
     </>

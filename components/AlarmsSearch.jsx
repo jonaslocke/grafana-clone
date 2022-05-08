@@ -11,7 +11,6 @@ const AlarmsSearch = () => {
     const { name, status } = data;
     if (name) setNameSearch(name);
     if (status) setStatusSearch(status);
-    console.log(data);
   };
   const formInputs = [
     { input: "name", label: "Name Filter" },
