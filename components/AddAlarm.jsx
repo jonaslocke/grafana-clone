@@ -14,7 +14,8 @@ const AddAlarm = () => {
       trigger: 80,
       paused: false,
     });
-    console.log(alarm);
+    console.log(alarm.delete());
+    console.log(alarm.delete());
   };
   return (
     <Fab
