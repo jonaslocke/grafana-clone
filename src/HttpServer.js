@@ -25,8 +25,11 @@ class HttpServer {
   async delete(payload) {
     try {
       const _id = payload.id;
+      const timestamp = new Date();
       alarms.data = alarms.data.map((alarm) =>
-        alarm.id === _id ? { ...payload, deletedOn: new Date() } : alarm
+        alarm.id === _id
+          ? { ...payload, deletedOn: timestamp.toISOString() }
+          : alarm
       );
       return this.getOne(_id);
     } catch (error) {

@@ -15,6 +15,8 @@ import { AlarmsContext } from "../../src/AlarmsContext";
 import { alarmsPerPage } from "../../src/Constants";
 import { capitalize } from "../../src/util";
 import GrafPagination from "./GrafPagination";
+import { fetchAlarms } from "../../src/HttpServer";
+import { useRouter } from "next/router";
 
 const headers = [
   "id",
@@ -27,29 +29,59 @@ const headers = [
 ];
 
 const AlarmsList = () => {
-  const pauseAlarm = async (alarm) => {
-    console.log("pauseAlarm", alarm.id);
+  const router = useRouter();
+  const togglePause = async (alarm) => {
+    const response = await fetchAlarms.update({
+      ...alarm,
+      paused: !alarm.paused,
+    });
+    const { status } = response;
+    if (status !== 200) {
+      return alert(
+        `Error trying to ${alarm.paused ? "resume" : "pause"} the alarm`
+      );
+    }
+    loadAlarms();
   };
-  const resumeAlarm = async (alarm) => {
-    console.log("resumeAlarm", alarm.id);
-  };
+
   const deleteAlarm = async (alarm) => {
-    console.log("deleteAlarm", alarm.id);
+    const confirm = window.confirm(`Delete alarm ${alarm.id}`);
+    if (confirm) {
+      const response = await fetchAlarms.delete(alarm);
+      const { status } = response;
+      if (status !== 200) return alert("Error trying to delete the alarm");
+      loadAlarms();
+    }
   };
+  const editAlarm = async (alarm) => {
+    const { id } = alarm;
+    router.push(`/alarms/${id}`);
+  };
+
   const getStatusIcon = (alarm) => {
     const { paused } = alarm;
     return paused ? "true" : "false";
   };
   const getActions = (alarm) => {
+    const { paused } = alarm;
     const actions = [
-      { label: "edit", color: "primary", callback: pauseAlarm },
+      { label: "edit", color: "primary", callback: editAlarm },
       { label: "del", color: "error", callback: deleteAlarm },
-      { label: "resume", color: "secondary", callback: resumeAlarm },
+      {
+        label: paused ? "resume" : "pause",
+        color: "secondary",
+        callback: togglePause,
+      },
     ];
     return (
       <Stack direction="row" justifyContent="flex-end" spacing={1}>
         {actions.map(({ label, color, callback }, id) => (
-          <Button key={id} color={color} onClick={() => callback(alarm)}>
+          <Button
+            key={id}
+            color={color}
+            onClick={() => callback(alarm)}
+            sx={{ width: 80 }}
+          >
             {label}
           </Button>
         ))}
@@ -57,9 +89,11 @@ const AlarmsList = () => {
     );
   };
 
+  const loadAlarms = () =>
+    setAlarms(alarmsData.data.filter(({ deletedOn }) => !deletedOn));
   const { page, setPage, setPages, nameSearch, statusSearch } =
     useContext(AlarmsContext);
-  const [alarms, setAlarms] = useState(alarmsData.data);
+  const [alarms, setAlarms] = useState([]);
   const [paginatedAlarms, setPaginatedAlarms] = useState([]);
 
   useEffect(() => {
