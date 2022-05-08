@@ -73,9 +73,10 @@ const AlarmsList = () => {
   }, [alarms, page]);
 
   useEffect(() => {
-    const filteredAlarms = alarmsData.data.filter(({ name }) =>
-      name.match(new RegExp(nameSearch, "i"))
-    );
+    const filteredAlarms = alarmsData.data.filter(({ name }) => {
+      const searchTerms = nameSearch.split(" ");
+      return searchTerms.every((term) => name.match(new RegExp(term, "i")));
+    });
     setAlarms(filteredAlarms);
     setPage(1);
     setPages(Math.ceil(filteredAlarms.length / alarmsPerPage));
