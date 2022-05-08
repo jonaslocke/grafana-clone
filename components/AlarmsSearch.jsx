@@ -17,8 +17,6 @@ const AlarmsSearch = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    setStatusSearch(nameSearch);
-    setNameSearch(statusSearch);
   };
   const isDirty = nameSearch || statusSearch.toString();
   const clearInputs = () => {

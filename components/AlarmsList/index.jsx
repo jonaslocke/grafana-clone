@@ -131,7 +131,7 @@ const AlarmsList = () => {
     setPage(1);
   }, [nameSearch, statusSearch]);
   useEffect(() => {
-    const count = alarms
+    const count = alarmsData.data
       .filter(({ deletedOn }) => !deletedOn)
       .filter(({ paused }) => !paused).length;
     setNotificationsCount(count);
