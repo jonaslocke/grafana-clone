@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { formInputs } from "../../src/FormInputs";
+import { alarmsFormInputs as formInputs } from "../../src/FormInputs";
 import { fetchAlarms } from "../../src/HttpServer";
 
 const AlarmsForm = ({ close }) => {

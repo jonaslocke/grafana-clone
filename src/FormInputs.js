@@ -1,5 +1,9 @@
 import { dataValidation as rules } from "../src/util";
-import { metricOptions, triggerConditions } from "../src/Constants";
+import {
+  metricOptions,
+  triggerConditions,
+  alarmStatus,
+} from "../src/Constants";
 import { MenuItem } from "@mui/material";
 
 class FormInputs {
@@ -37,15 +41,15 @@ class FormInputs {
     });
   }
 }
-const formInputs = [];
-formInputs.push(
+const alarmsFormInputs = [];
+alarmsFormInputs.push(
   new FormInputs({
     input: "id",
     label: "ID",
     disabled: true,
   })
 );
-formInputs.push(
+alarmsFormInputs.push(
   new FormInputs({
     input: "name",
     label: "Name",
@@ -53,7 +57,7 @@ formInputs.push(
     errorMessage: rules.alphaNum.message,
   })
 );
-formInputs.push(
+alarmsFormInputs.push(
   new FormInputs({
     input: "source",
     label: "Source",
@@ -61,7 +65,7 @@ formInputs.push(
     errorMessage: rules.alphaNum.message,
   })
 );
-formInputs.push(
+alarmsFormInputs.push(
   new FormInputs({
     input: "metric",
     label: "Metric",
@@ -73,7 +77,7 @@ formInputs.push(
     )),
   })
 );
-formInputs.push(
+alarmsFormInputs.push(
   new FormInputs({
     input: "triggerCondition",
     label: "Trigger Condition",
@@ -86,7 +90,7 @@ formInputs.push(
     )),
   })
 );
-formInputs.push(
+alarmsFormInputs.push(
   new FormInputs({
     input: "trigger",
     label: "Trigger",
@@ -97,4 +101,30 @@ formInputs.push(
   })
 );
 
-export { formInputs };
+const searchFormInputs = [];
+
+const formInputs = [
+  { input: "name", label: "Name Filter" },
+  { input: "status", label: "Status Filter" },
+];
+
+searchFormInputs.push(
+  new FormInputs({
+    input: "name",
+    label: "Name Filter",
+  })
+);
+searchFormInputs.push(
+  new FormInputs({
+    input: "status",
+    label: "Status Filter",
+    select: true,
+    selectOptions: alarmStatus.map((option) => (
+      <MenuItem key={option.value} value={option.value}>
+        {option.label}
+      </MenuItem>
+    )),
+  })
+);
+
+export { alarmsFormInputs, searchFormInputs };

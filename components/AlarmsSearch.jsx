@@ -1,41 +1,65 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { useContext } from "react";
-import { useForm } from "react-hook-form";
 import { AlarmsContext } from "../src/AlarmsContext";
+import { searchFormInputs as formInputs } from "../src/FormInputs";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const AlarmsSearch = () => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = async (data) => {
-    const inError = Object.values(data).every((value) => !value);
-    if (inError) return alert("Fill at least one field");
-    const { name, status } = data;
-    if (name) setNameSearch(name);
-    if (status) setStatusSearch(status);
+  const { nameSearch, setNameSearch, statusSearch, setStatusSearch } =
+    useContext(AlarmsContext);
+  const controller = {};
+  controller.name = nameSearch;
+  controller.status = statusSearch;
+  const handleChange = (event) => {
+    event.preventDefault();
+    const { value, name } = event.target;
+    name === "status" ? setStatusSearch(value) : setNameSearch(value);
   };
-  const formInputs = [
-    { input: "name", label: "Name Filter" },
-    { input: "status", label: "Status Filter" },
-  ];
-  const { setNameSearch, setStatusSearch } = useContext(AlarmsContext);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setStatusSearch(nameSearch);
+    setNameSearch(statusSearch);
+  };
+  const isDirty = nameSearch || statusSearch.toString();
+  const clearInputs = () => {
+    setStatusSearch("");
+    setNameSearch("");
+  };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit}>
         <Stack direction="row" spacing={2} sx={{ paddingTop: 2 }}>
-          {formInputs.map(({ input, label }) => (
+          {formInputs.map(({ input, label, select, selectOptions }) => (
             <TextField
               id={input}
               key={input}
               label={label}
+              name={input}
               variant="outlined"
-              {...register(input)}
               size="small"
-            />
+              select={select}
+              onChange={handleChange}
+              value={controller[input]}
+              sx={{ minWidth: 150 }}
+            >
+              {select && selectOptions}
+            </TextField>
           ))}
 
           <Button variant="contained" component="label" htmlFor="submit">
-            Submit
+            Search
           </Button>
+          {isDirty && (
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={clearInputs}
+            >
+              clear
+            </Button>
+          )}
         </Stack>
         <input id="submit" type="submit" hidden />
       </form>

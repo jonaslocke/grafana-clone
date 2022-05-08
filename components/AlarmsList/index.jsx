@@ -116,9 +116,20 @@ const AlarmsList = () => {
       return searchTerms.every((term) => name.match(new RegExp(term, "i")));
     });
     setAlarms(filteredAlarms);
-    setPage(1);
     setPages(Math.ceil(filteredAlarms.length / alarmsPerPage));
   }, [nameSearch]);
+  useEffect(() => {
+    if (statusSearch !== "") {
+      const filteredAlarms = alarmsData.data.filter(
+        ({ paused }) => paused === statusSearch
+      );
+      setAlarms(filteredAlarms);
+      setPages(Math.ceil(filteredAlarms.length / alarmsPerPage));
+    }
+  }, [statusSearch]);
+  useEffect(() => {
+    setPage(1);
+  }, [nameSearch, statusSearch]);
   useEffect(() => {
     const count = alarms
       .filter(({ deletedOn }) => !deletedOn)
