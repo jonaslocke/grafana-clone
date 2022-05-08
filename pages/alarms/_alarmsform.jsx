@@ -12,11 +12,11 @@ const AlarmsForm = ({ close }) => {
   const isEditing = slug !== "create";
 
   const formInputs = [
-    { input: "id", label: "ID", disabled: true },
-    { input: "name", label: "Name", disabled: false },
-    { input: "source", label: "Source", disabled: false },
-    { input: "metric", label: "Metric", disabled: false },
-    { input: "trigger", label: "Trigger", disabled: false },
+    { input: "id", label: "ID", disabled: true, type: "text" },
+    { input: "name", label: "Name", disabled: false, type: "text" },
+    { input: "source", label: "Source", disabled: false, type: "text" },
+    { input: "metric", label: "Metric", disabled: false, type: "text" },
+    { input: "trigger", label: "Trigger", disabled: false, type: "number" },
   ];
 
   const [alarm, setAlarm] = useState(
@@ -36,7 +36,11 @@ const AlarmsForm = ({ close }) => {
     const response = await fetchAlarms.getOne(slug);
     setLoading(false);
     const { status } = response;
-    setAlarm(status === 200 ? response.data : {});
+    if (status === 200) {
+      setAlarm(response.data);
+    } else {
+      setError(`We tried to load that alarm, but we failed!`);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -52,12 +56,17 @@ const AlarmsForm = ({ close }) => {
     if (status === 200) {
       setAlarm(data);
     } else {
-      setError(`Error`);
+      setError(`We tried to update this alarm, but we failed!`);
     }
   };
   const createAlarm = async () => {
-    const isValid = Object.values(alarm).every((val) => !!val);
-    if (!isValid) return alert("");
+    setLoading(true);
+    const response = await fetchAlarms.create(alarm);
+    setLoading(false);
+    const { status } = response;
+    if (status !== 200) {
+      setError("An error ocurred, the alarm was not created!");
+    }
   };
 
   const handleChange = (event) => {
@@ -86,7 +95,7 @@ const AlarmsForm = ({ close }) => {
   const form = () => (
     <form onSubmit={handleSubmit}>
       <Grid container spacing={2}>
-        {formInputs.map(({ input, label, disabled }) => (
+        {formInputs.map(({ input, label, disabled, type }) => (
           <Grid item key={input} xs={6}>
             <TextField
               onChange={handleChange}
@@ -97,6 +106,7 @@ const AlarmsForm = ({ close }) => {
               disabled={disabled}
               sx={{ width: 1 }}
               required={true}
+              type={type}
             />
           </Grid>
         ))}
@@ -125,8 +135,8 @@ const AlarmsForm = ({ close }) => {
         onClick={close}
       >
         <ErrorIcon color="error" fontSize={"large"} />
-        <Typography variant="h5" noWrap component="div">
-          We tried to find that alarm but we failed!
+        <Typography variant="h5" noWrap component="div" color={"error"}>
+          {error}
         </Typography>
       </Stack>
     );
