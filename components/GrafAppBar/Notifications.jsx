@@ -4,11 +4,10 @@ import { useContext } from "react";
 import { GlobalContext } from "../../src/GlobalContext";
 
 const Notifications = () => {
-  const { notificationsCount } = useContext(GlobalContext);
-
-  return (
-    <Avatar sx={{ bgcolor: deepOrange[500] }}>{notificationsCount}</Avatar>
-  );
+  const {
+    notifications: { active },
+  } = useContext(GlobalContext);
+  return <Avatar sx={{ bgcolor: deepOrange[500] }}>{active}</Avatar>;
 };
 
 export default Notifications;

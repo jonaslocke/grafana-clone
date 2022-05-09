@@ -1,22 +1,30 @@
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useState } from "react";
 import Head from "next/head";
-import { GlobalContext } from "../src/GlobalContext";
+import { useEffect, useState } from "react";
 import GrafAppBar from "../components/GrafAppBar";
-import GrafSidebar from "../components/GrafSidebar";
 import GrafDrawerHeader from "../components/GrafDrawerHeader";
+import GrafSidebar from "../components/GrafSidebar";
+import { GlobalContext } from "../src/GlobalContext";
+import { alarms as alarmsData } from "../dao/DaoAlarms";
 
 export default function GrafanaClone({ Component, pageProps }) {
+  const [alarms, setAlarms] = useState(alarmsData.data);
   const [drawer, setDrawer] = useState(false);
-  const [notificationsCount, setNotificationsCount] = useState(2);
+  const [notifications, setNotifications] = useState({ active: 0, total: 0 });
   const handleDrawerOpen = () => {
     setDrawer(true);
   };
   const handleDrawerClose = () => {
     setDrawer(false);
   };
+
+  useEffect(() => {
+    const data = alarmsData.data.filter(({ deletedOn }) => !deletedOn);
+    const active = data.filter(({ paused }) => !paused).length;
+    const total = data.length;
+    setNotifications({ active, total });
+  }, [alarms]);
 
   return (
     <>
@@ -31,8 +39,9 @@ export default function GrafanaClone({ Component, pageProps }) {
           setDrawer,
           handleDrawerOpen,
           handleDrawerClose,
-          notificationsCount,
-          setNotificationsCount,
+          alarms,
+          setAlarms,
+          notifications,
         }}
       >
         <Box sx={{ display: "flex" }}>

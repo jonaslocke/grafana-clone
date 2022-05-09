@@ -12,7 +12,7 @@ const randomize = (array) => {
 
 const alarms = {};
 const data = [];
-for (let i = 0; i < 19; i++) {
+for (let i = 0; i < 32; i++) {
   const alarm = new Alarm({
     name: `My alarm ${i + 1}`,
     source: `Server ${i + 1}`,

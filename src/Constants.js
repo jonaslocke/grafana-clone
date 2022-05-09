@@ -1,5 +1,5 @@
 const drawerWidth = 240;
-const alarmsPerPage = 7;
+const alarmsPerPage = 8;
 const metricOptions = [
   { value: "cpu", label: "CPU" },
   { value: "memory", label: "Memory" },
@@ -13,6 +13,15 @@ const alarmStatus = [
   { value: true, label: "Paused" },
   { value: false, label: "Running" },
 ];
+const headers = [
+  "id",
+  "name",
+  "source",
+  "metric",
+  "trigger",
+  "paused",
+  "actions",
+];
 
 export {
   drawerWidth,
@@ -20,4 +29,5 @@ export {
   metricOptions,
   triggerConditions,
   alarmStatus,
+  headers,
 };

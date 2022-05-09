@@ -1,7 +1,6 @@
+import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
 import { Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/router";
-import { Alarm } from "../src/Alarm.js";
 
 const AddAlarm = () => {
   const router = useRouter();
@@ -17,7 +16,7 @@ const AddAlarm = () => {
       }}
       onClick={() => handleClick()}
     >
-      <AddIcon />
+      <NotificationAddIcon />
     </Fab>
   );
 };
