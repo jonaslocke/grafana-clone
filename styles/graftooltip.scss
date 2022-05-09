@@ -1,0 +1,32 @@
+.tooltip {
+  position: relative;
+  cursor: help;
+  &::before {
+    display: block;
+    position: absolute;
+    background-color: #cecece;
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0.8;
+    white-space: nowrap;
+  }
+  &:hover {
+    &::before {
+      content: attr(data-graf-tooltip);
+    }
+  }
+  &.bottom {
+    &::before {
+      bottom: -100%;
+      right: 0;
+    }
+  }
+  &.top {
+    &::before {
+      top: -100%;
+      right: 0;
+    }
+  }
+}

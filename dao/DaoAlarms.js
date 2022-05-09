@@ -12,13 +12,17 @@ const randomize = (array) => {
 
 const alarms = {};
 const data = [];
-for (let i = 0; i < 32; i++) {
+const randomInterval = (min, max) => {
+  return parseInt(Math.floor(Math.random() * (max - min + 1) + min));
+};
+for (let i = 0; i < randomInterval(15, 30); i++) {
   const alarm = new Alarm({
     name: `My alarm ${i + 1}`,
     source: `Server ${i + 1}`,
     metric: randomize(metricOptions).value,
     triggerCondition: randomize(triggerConditions).value,
     trigger: 80,
+    paused: randomInterval(0, 1) === 0,
   });
   data.push(alarm);
 }

@@ -7,6 +7,8 @@ import GrafDrawerHeader from "../components/GrafDrawerHeader";
 import GrafSidebar from "../components/GrafSidebar";
 import { GlobalContext } from "../src/GlobalContext";
 import { alarms as alarmsData } from "../dao/DaoAlarms";
+import "../styles/globals.css";
+import "../styles/graftooltip.scss"
 
 export default function GrafanaClone({ Component, pageProps }) {
   const [alarms, setAlarms] = useState(alarmsData.data);
