@@ -12,5 +12,8 @@ const dataValidation = {
     message: "Value must be a positive integer",
   },
 };
+const randomInterval = ({ min, max }) => {
+  return parseInt(Math.floor(Math.random() * (max - min + 1) + min));
+};
 
-export { capitalize, dataValidation };
+export { capitalize, dataValidation, randomInterval };

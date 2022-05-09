@@ -1,3 +1,5 @@
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
 import {
   Button,
   Paper,
@@ -7,7 +9,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -60,24 +62,45 @@ const AlarmsList = () => {
   const getActions = (alarm) => {
     const { paused } = alarm;
     const actions = [
-      { label: "edit", color: "primary", callback: editAlarm },
-      { label: "del", color: "error", callback: deleteAlarm },
+      {
+        label: "edit",
+        color: "primary",
+        callback: editAlarm,
+        variant: "outlined",
+        icon: null,
+        size: 80,
+      },
+      {
+        label: "del",
+        color: "error",
+        callback: deleteAlarm,
+        variant: "outlined",
+        icon: null,
+        size: 80,
+      },
       {
         label: paused ? "resume" : "pause",
-        color: "secondary",
+        color: paused ? "success" : "error",
         callback: togglePause,
+        variant: "contained",
+        icon: paused ? (
+          <PlayCircleFilledWhiteIcon fontSize="small" />
+        ) : (
+          <PauseCircleIcon fontSize="small" />
+        ),
+        size: 110,
       },
     ];
     return (
       <Stack direction="row" justifyContent="flex-end" spacing={1}>
-        {actions.map(({ label, color, callback }, id) => (
+        {actions.map(({ label, color, callback, variant, icon, size }, id) => (
           <Button
             key={id}
             color={color}
             onClick={() => callback(alarm)}
-            sx={{ width: 80 }}
-            variant="contained"
-            size="small"
+            sx={{ width: size }}
+            variant={variant}
+            startIcon={icon}
           >
             {label}
           </Button>
